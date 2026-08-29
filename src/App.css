@@ -355,7 +355,7 @@
 .ficha-form textarea {
   width: 100%;
   box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--field-bg);
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 11px 14px;

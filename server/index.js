@@ -372,6 +372,19 @@ app.put('/api/users/:id', async (req, res) => {
   }
 })
 
+app.delete('/api/users/:id', async (req, res) => {
+  const id = Number(req.params.id)
+  if (!id) return res.status(400).json({ success: false, error: 'ID inválido' })
+  
+  try {
+    await pool.query('DELETE FROM users WHERE id = ?', [id])
+    res.json({ success: true, message: 'Usuario eliminado' })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ success: false, error: 'Error interno' })
+  }
+})
+
 app.post('/api/pending', async (req, res) => {
   const { page, content, author } = req.body
   const date = new Date().toISOString()

@@ -177,6 +177,17 @@ export default function AdminPanel() {
     }
   }
 
+  async function deleteUser(id) {
+    if (!confirm('¿Estás seguro de eliminar este usuario?')) return
+    try {
+      const res = await fetch(`/api/users/${id}`, { method: 'DELETE' })
+      if (!res.ok) throw new Error()
+      await loadUsers()
+    } catch (err) {
+      alert('Error al eliminar usuario')
+    }
+  }
+
   return (
     <section className="page admin-shell">
       <div className="admin-panel-header">
@@ -225,6 +236,7 @@ export default function AdminPanel() {
                         <option value="admin">Administrador</option>
                       </select>
                       <button className="btn ghost tiny" onClick={() => setEditingUser(u)}>Editar</button>
+                      <button className="btn ghost tiny" onClick={() => deleteUser(u.id)} style={{ color: 'var(--accent)', borderColor: 'var(--accent)' }}>Borrar</button>
                     </div>
                   </>
                 )}

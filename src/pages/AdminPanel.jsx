@@ -150,6 +150,33 @@ export default function AdminPanel() {
     }
   }
 
+  const [editingUser, setEditingUser] = useState(null)
+  
+  async function saveUserEdit(e) {
+    e.preventDefault()
+    if (!editingUser.username || !editingUser.email) {
+      alert('Usuario y email son obligatorios')
+      return
+    }
+    try {
+      const res = await fetch(`/api/users/${editingUser.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingUser),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        alert(data.error || 'No se pudo actualizar el usuario')
+        return
+      }
+      setEditingUser(null)
+      await loadUsers()
+      alert('Usuario actualizado correctamente')
+    } catch (err) {
+      alert('Error al actualizar el usuario')
+    }
+  }
+
   return (
     <section className="page admin-shell">
       <div className="admin-panel-header">
@@ -177,15 +204,30 @@ export default function AdminPanel() {
           <ul className="admin-list">
             {users.map((u) => (
               <li key={u.id} className="pending-item">
-                <strong>{u.username}</strong>
-                <div className="pending-meta">{u.email}</div>
-                <div className="pending-meta">Rol: <span style={{ fontWeight: 600, color: u.role === 'admin' ? 'var(--accent)' : 'var(--text)' }}>{u.role}</span></div>
-                <div style={{ marginTop: '10px' }}>
-                  <select value={u.role} onChange={(e) => changeRole(u.id, e.target.value)} style={{ fontSize: '12px' }}>
-                    <option value="user">Cliente</option>
-                    <option value="admin">Administrador</option>
-                  </select>
-                </div>
+                {editingUser && editingUser.id === u.id ? (
+                  <form onSubmit={saveUserEdit} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <input value={editingUser.name || ''} onChange={(e) => setEditingUser({ ...editingUser, name: e.target.value })} placeholder="Nombre" />
+                    <input value={editingUser.username || ''} onChange={(e) => setEditingUser({ ...editingUser, username: e.target.value })} placeholder="Usuario" />
+                    <input type="email" value={editingUser.email || ''} onChange={(e) => setEditingUser({ ...editingUser, email: e.target.value })} placeholder="Email" />
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <button type="submit" className="btn tiny">Guardar</button>
+                      <button type="button" className="btn ghost tiny" onClick={() => setEditingUser(null)}>Cancelar</button>
+                    </div>
+                  </form>
+                ) : (
+                  <>
+                    <strong>{u.username}</strong> {u.name && <span style={{fontSize: '12px', opacity: 0.8}}>({u.name})</span>}
+                    <div className="pending-meta">{u.email}</div>
+                    <div className="pending-meta">Rol: <span style={{ fontWeight: 600, color: u.role === 'admin' ? 'var(--accent)' : 'var(--text)' }}>{u.role}</span></div>
+                    <div style={{ marginTop: '10px', display: 'flex', gap: '10px', alignItems: 'center' }}>
+                      <select value={u.role} onChange={(e) => changeRole(u.id, e.target.value)} style={{ fontSize: '12px' }}>
+                        <option value="user">Cliente</option>
+                        <option value="admin">Administrador</option>
+                      </select>
+                      <button className="btn ghost tiny" onClick={() => setEditingUser(u)}>Editar</button>
+                    </div>
+                  </>
+                )}
               </li>
             ))}
           </ul>

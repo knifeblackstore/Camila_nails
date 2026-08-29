@@ -343,6 +343,35 @@ app.patch('/api/users/:id/role', async (req, res) => {
   }
 })
 
+app.put('/api/users/:id', async (req, res) => {
+  const id = Number(req.params.id)
+  const { name, username, email } = req.body
+
+  if (!id || !username || !email) {
+    return res.status(400).json({ success: false, error: 'Faltan campos obligatorios' })
+  }
+
+  try {
+    const [existing] = await pool.query(
+      'SELECT id FROM users WHERE (username = ? OR email = ?) AND id != ?',
+      [username, email, id]
+    )
+
+    if (existing.length > 0) {
+      return res.status(409).json({ success: false, error: 'El usuario o email ya está en uso por otra persona' })
+    }
+
+    await pool.query(
+      'UPDATE users SET name = ?, username = ?, email = ? WHERE id = ?',
+      [name || '', username, email, id]
+    )
+    res.json({ success: true, message: 'Usuario actualizado correctamente' })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ success: false, error: 'Error interno' })
+  }
+})
+
 app.post('/api/pending', async (req, res) => {
   const { page, content, author } = req.body
   const date = new Date().toISOString()

@@ -1,0 +1,184 @@
+<!doctype html>
+<!-- Documento académico de evidencias del proyecto Camila nails. -->
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GA7-220501096-AA5-EV01 - Camila nails</title>
+  <style>
+    /* Configuración de impresión y lenguaje visual del documento. */
+    @page { size: A4; margin: 2cm 2.2cm; }
+    :root { --ink:#292321; --muted:#75645d; --accent:#c85f5b; --soft:#f7ece7; --line:#dfcfc7; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); font-family:Georgia, 'Times New Roman', serif; font-size:11pt; line-height:1.55; }
+    h1,h2,h3 { color:var(--ink); line-height:1.15; }
+    h1 { font-size:30pt; margin:0 0 12px; }
+    h2 { font-size:20pt; margin:0 0 14px; border-bottom:2px solid var(--accent); padding-bottom:7px; }
+    h3 { font-size:14pt; margin:18px 0 6px; color:var(--accent); }
+    p { margin:0 0 10px; text-align:justify; }
+    .cover { min-height:25cm; display:flex; flex-direction:column; justify-content:center; text-align:center; page-break-after:always; }
+    .cover-logo { width:125px; height:125px; object-fit:contain; border-radius:50%; margin:0 auto 24px; box-shadow:0 10px 25px rgba(200,95,91,.2); }
+    .cover-kicker { color:var(--accent); text-transform:uppercase; letter-spacing:2px; font:600 10pt Arial, sans-serif; margin-bottom:28px; }
+    .cover h1 { color:var(--accent); font-style:italic; }
+    .cover-subtitle { font-size:16pt; margin-bottom:42px; }
+    .cover-data { display:inline-block; min-width:75%; padding:20px 30px; background:var(--soft); border-left:4px solid var(--accent); text-align:left; }
+    .cover-data p { margin:4px 0; text-align:left; }
+    .cover-footer { margin-top:48px; color:var(--muted); font-size:10pt; }
+    .section { page-break-before:always; }
+    .section:first-of-type { page-break-before:auto; }
+    .toc { padding:16px 20px; background:var(--soft); border-left:4px solid var(--accent); }
+    .toc p { display:flex; justify-content:space-between; margin:8px 0; text-align:left; }
+    .toc span:last-child { color:var(--muted); }
+    .info-table { width:100%; border-collapse:collapse; margin:14px 0 20px; }
+    .info-table td { border:1px solid var(--line); padding:9px 11px; vertical-align:top; }
+    .info-table td:first-child { width:31%; font-weight:bold; background:var(--soft); }
+    .feature-list { padding-left:20px; }
+    .feature-list li { margin-bottom:7px; }
+    .evidence { margin:18px 0 24px; page-break-inside:avoid; }
+    .evidence img { width:100%; max-height:16cm; object-fit:contain; object-position:top; border:1px solid var(--line); display:block; }
+    .caption { color:var(--muted); font:9pt Arial, sans-serif; margin-top:5px; text-align:center; }
+    .code-box { background:#292321; color:#f9eee9; padding:14px 16px; font:9pt Consolas, monospace; white-space:pre-wrap; border-radius:4px; }
+    .conclusion { padding:18px 20px; background:var(--soft); border-top:3px solid var(--accent); }
+    .small { color:var(--muted); font-size:10pt; }
+    @media print { .section { page-break-before:always; } a { color:inherit; text-decoration:none; } }
+  </style>
+</head>
+<body>
+  <!-- Portada con los datos del aprendiz, programa, ficha e instructor. -->
+  <section class="cover">
+    <img class="cover-logo" src="/logo-camila-nails.png.jpeg" alt="Logo Camila nails">
+    <div class="cover-kicker">Servicio Nacional de Aprendizaje · SENA</div>
+    <h1>Camila nails</h1>
+    <div class="cover-subtitle">Diseño y desarrollo de servicios web - caso<br><strong>GA7-220501096-AA5-EV01</strong></div>
+    <div class="cover-data">
+      <p><strong>Aprendiz:</strong> Andrés Mauricio Valencia Arango</p>
+      <p><strong>Programa:</strong> Tecnología en Análisis y Desarrollo de Software</p>
+      <p><strong>Ficha:</strong> 3186645</p>
+      <p><strong>Instructor:</strong> Adonay Sánchez</p>
+    </div>
+    <div class="cover-footer">Pereira, Colombia · 23 de agosto de 2026</div>
+  </section>
+
+  <!-- Índice del documento. -->
+  <section class="section">
+    <h2>Índice</h2>
+    <div class="toc">
+      <p><span>1. Introducción</span><span>3</span></p>
+      <p><span>2. Objetivos</span><span>4</span></p>
+      <p><span>3. Descripción y desarrollo del proyecto</span><span>5</span></p>
+      <p><span>4. Tecnologías y arquitectura</span><span>7</span></p>
+      <p><span>5. Impresiones visuales del proyecto</span><span>8</span></p>
+      <p><span>6. Conclusiones</span><span>11</span></p>
+    </div>
+  </section>
+
+  <!-- Introducción académica al problema y a la solución construida. -->
+  <section class="section">
+    <h2>1. Introducción</h2>
+    <p>El presente documento describe el diseño y desarrollo de <strong>Camila nails</strong>, un servicio web creado para presentar los servicios de un estudio de uñas, orientar a sus clientes y facilitar la solicitud de citas. El proyecto responde a la necesidad de contar con una presencia digital clara, atractiva y funcional, donde la información comercial pueda consultarse desde distintos dispositivos.</p>
+    <p>La solución fue construida como una aplicación web moderna con React y Vite. Su interfaz incorpora una identidad visual cálida, navegación por secciones, catálogo de estilos, información sobre esmaltes, guía de enfermedades de las uñas, autenticación de usuarios, perfil personal y un flujo de agendamiento que conecta con WhatsApp.</p>
+    <p>También se implementó una separación de permisos: los clientes consultan el contenido y gestionan su perfil, mientras que el administrador cuenta con herramientas privadas para autorizar cambios y administrar imágenes del catálogo.</p>
+  </section>
+
+  <!-- Objetivo general y objetivos específicos del proyecto. -->
+  <section class="section">
+    <h2>2. Objetivos</h2>
+    <h3>2.1 Objetivo general</h3>
+    <p>Diseñar y desarrollar un servicio web para Camila nails que permita presentar sus servicios de manera atractiva, facilitar la interacción con los clientes y ofrecer herramientas de administración de contenidos.</p>
+    <h3>2.2 Objetivos específicos</h3>
+    <ul class="feature-list">
+      <li>Construir una interfaz responsive, clara y coherente con la identidad visual del emprendimiento.</li>
+      <li>Organizar la información en las secciones de historia, estilos, esmaltes y cuidado de las uñas.</li>
+      <li>Implementar registro e inicio de sesión para controlar el acceso a funciones privadas.</li>
+      <li>Permitir que clientes y administrador actualicen el nombre de su perfil.</li>
+      <li>Restringir las herramientas de edición, aprobación y carga de imágenes al administrador.</li>
+      <li>Facilitar la solicitud de citas mediante un formulario conectado a WhatsApp.</li>
+    </ul>
+  </section>
+
+  <!-- Explicación funcional de los módulos desarrollados. -->
+  <section class="section">
+    <h2>3. Descripción y desarrollo del proyecto</h2>
+    <h3>3.1 Interfaz pública</h3>
+    <p>La página de inicio presenta la propuesta de valor del estudio, un bloque visual de inspiración, servicios destacados y llamados a la acción. La navegación permite acceder a la historia profesional, estilos de uñas, marcas de esmaltes y guía de enfermedades.</p>
+    <h3>3.2 Autenticación y perfiles</h3>
+    <p>El sistema cuenta con registro e inicio de sesión. La sesión conserva los datos básicos del usuario y distingue entre el rol de cliente y el rol de administrador. Cada usuario autenticado dispone de un perfil desde el cual puede cambiar su nombre sin modificar su usuario, correo ni permisos.</p>
+    <h3>3.3 Agendamiento</h3>
+    <p>La sección de contacto está protegida para usuarios autenticados. El formulario solicita nombre, teléfono, fecha, hora y notas; luego prepara un mensaje codificado y abre WhatsApp con la información de la reserva.</p>
+    <h3>3.4 Administración</h3>
+    <p>El administrador puede acceder al panel privado, revisar propuestas, aprobar o rechazar cambios y subir imágenes para los servicios. Estas opciones no se muestran a los clientes, conservando una experiencia pública limpia y evitando exponer controles de gestión.</p>
+  </section>
+
+  <!-- Resumen técnico de herramientas y organización de carpetas. -->
+  <section class="section">
+    <h2>4. Tecnologías y arquitectura</h2>
+    <table class="info-table">
+      <tr><td>Frontend</td><td>React 19, React Router y Vite.</td></tr>
+      <tr><td>Estilos</td><td>CSS con variables, diseño responsive, tarjetas, navegación tipo burbuja y tipografías editoriales.</td></tr>
+      <tr><td>Backend</td><td>Node.js con Express, endpoints REST para autenticación, perfiles, propuestas y archivos.</td></tr>
+      <tr><td>Persistencia</td><td>LowDB con archivo JSON para usuarios, propuestas e imágenes; localStorage como respaldo offline.</td></tr>
+      <tr><td>Seguridad funcional</td><td>Rutas protegidas, rol administrativo, contraseñas almacenadas mediante hash y respuestas de usuario sin contraseña.</td></tr>
+      <tr><td>Comunicación</td><td>Proxy de Vite hacia el servidor local y enlace de reserva mediante WhatsApp.</td></tr>
+    </table>
+    <h3>4.1 Estructura principal</h3>
+    <div class="code-box">src/
+  App.jsx              Rutas y composición principal
+  AuthProvider.jsx     Estado de autenticación y perfil
+  components/          Barra, lightbox y rutas protegidas
+  pages/               Inicio, catálogo, contacto, login y administración
+  assets/              Logo, fotografías y recursos visuales
+server/
+  index.js             API Express
+  db.json              Persistencia local</div>
+  </section>
+
+  <!-- Evidencia del proceso: estructura, autenticación, backend y resultado visual. -->
+  <section class="section">
+    <h2>4.2 Proceso de construcción</h2>
+    <p>El servicio se construyó por etapas. Primero se organizó la aplicación React y sus rutas; luego se incorporaron los componentes visuales, la autenticación, el perfil de usuario y finalmente el backend para persistir la información.</p>
+    <h3>Etapa 1 · Estructura de la aplicación</h3>
+    <div class="code-box">// Rutas principales de Camila nails
+&lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+&lt;Route path="/styles" element={&lt;Styles /&gt;} /&gt;
+&lt;Route path="/polishes" element={&lt;Polishes /&gt;} /&gt;
+&lt;Route path="/contact" element={
+  &lt;ProtectedRoute&gt;&lt;Contact /&gt;&lt;/ProtectedRoute&gt;
+} /&gt;</div>
+    <h3>Etapa 2 · Gestión de usuarios</h3>
+    <div class="code-box">// El perfil conserva el usuario y actualiza solo el nombre
+const updatedUser = { ...user, name: cleanName }
+setUser(updatedUser)
+localStorage.setItem('kb_user', JSON.stringify(updatedUser))</div>
+    <h3>Etapa 3 · Servicios del backend</h3>
+    <div class="code-box">// Endpoint para guardar el nombre del perfil
+app.put('/api/profile', async (req, res) =&gt; {
+  user.name = cleanName
+  await db.write()
+  return res.json({ success: true, user: safe })
+})</div>
+    <h3>Etapa 4 · Resultado visual</h3>
+    <p>La lógica anterior se integra con una identidad visual cálida, navegación tipo burbuja, catálogo de servicios e imágenes de referencia.</p>
+  </section>
+
+  <!-- Impresiones visuales de las páginas y recursos del proyecto. -->
+  <section class="section">
+    <h2>5. Impresiones visuales del proyecto</h2>
+    <p>Las siguientes impresiones documentan la interfaz visual implementada, sus recursos gráficos y las principales pantallas del servicio web.</p>
+    <div class="evidence"><img src="/src/assets/logo-camila-nails.png.jpeg" alt="Identidad visual de Camila nails"><div class="caption">Figura 1. Identidad visual de Camila nails usada en la página de inicio.</div></div>
+    <div class="evidence"><img src="/src/assets/styles/builder-gel.jpg" alt="Recurso visual del catálogo de estilos"><div class="caption">Figura 2. Recursos visuales del catálogo de estilos y servicios de uñas.</div></div>
+    <div class="evidence"><img src="/src/assets/styles/Esmaltado semipermanente.jpg" alt="Recurso visual de la sección de esmaltes"><div class="caption">Figura 3. Identidad visual de la sección de marcas de esmaltes.</div></div>
+    <div class="evidence"><img src="/logo-camila-nails.png.jpeg" alt="Logo de Camila nails"><div class="caption">Figura 4. Logo utilizado en las pantallas de inicio de sesión y registro.</div></div>
+  </section>
+
+  <!-- Cierre con los resultados y aprendizajes obtenidos. -->
+  <section class="section">
+    <h2>6. Conclusiones</h2>
+    <div class="conclusion">
+      <p>El desarrollo de Camila nails permitió integrar diseño visual, navegación, autenticación y comunicación con el cliente en un mismo servicio web. La interfaz presenta la marca de forma atractiva y organiza la información para que pueda consultarse con facilidad.</p>
+      <p>La incorporación de roles mejora la separación entre la experiencia del cliente y las tareas administrativas. De esta manera, los visitantes encuentran una página limpia y los usuarios autenticados pueden acceder a funciones específicas como el agendamiento y la edición de su perfil.</p>
+      <p>Finalmente, el proyecto demuestra la aplicación práctica de tecnologías actuales para construir una solución escalable. Como trabajo futuro se podrían incorporar autenticación con tokens, una base de datos de producción, confirmaciones automáticas de citas y un editor visual para contenidos.</p>
+    </div>
+    <p class="small" style="margin-top:28px;">Documento elaborado como evidencia del proyecto “Diseño y desarrollo de servicios web - caso. GA7-220501096-AA5-EV01”.</p>
+  </section>
+</body>
+</html>

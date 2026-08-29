@@ -1,0 +1,14 @@
+{
+  "users": [
+    {
+      "id": 1787352975593,
+      "name": "Maria Camila",
+      "username": "admin",
+      "email": "admin@admin.com",
+      "role": "admin",
+      "passwordHash": "$2a$10$8HijBviEyXMpnMnk.XnFNefEjGjo4j9k2tBz9nZxTsXsgSEAa9kNu"
+    }
+  ],
+  "pending": [],
+  "uploads": []
+}

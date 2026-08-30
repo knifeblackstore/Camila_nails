@@ -188,6 +188,62 @@ export default function AdminPanel() {
     }
   }
 
+  const [newFicha, setNewFicha] = useState({ nombre: '', telefono: '', servicio: '' })
+  const [editingFicha, setEditingFicha] = useState(null)
+
+  async function createFicha(e) {
+    e.preventDefault()
+    if (!newFicha.nombre || !newFicha.telefono || !newFicha.servicio) {
+      alert('Nombre, teléfono y servicio son obligatorios')
+      return
+    }
+    try {
+      const res = await fetch('/api/fichas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newFicha),
+      })
+      if (!res.ok) throw new Error()
+      setNewFicha({ nombre: '', telefono: '', servicio: '' })
+      await loadFichas()
+      alert('Ficha creada correctamente')
+    } catch (err) {
+      alert('Error al crear la ficha')
+    }
+  }
+
+  async function saveFichaEdit(e) {
+    e.preventDefault()
+    if (!editingFicha.nombre || !editingFicha.telefono || !editingFicha.servicio) {
+      alert('Nombre, teléfono y servicio son obligatorios')
+      return
+    }
+    try {
+      const res = await fetch(`/api/fichas/${editingFicha.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingFicha),
+      })
+      if (!res.ok) throw new Error()
+      setEditingFicha(null)
+      await loadFichas()
+      alert('Ficha actualizada correctamente')
+    } catch (err) {
+      alert('Error al actualizar la ficha')
+    }
+  }
+
+  async function deleteFicha(id) {
+    if (!confirm('¿Estás seguro de eliminar esta ficha?')) return
+    try {
+      const res = await fetch(`/api/fichas/${id}`, { method: 'DELETE' })
+      if (!res.ok) throw new Error()
+      await loadFichas()
+    } catch (err) {
+      alert('Error al eliminar la ficha')
+    }
+  }
+
   return (
     <section className="page admin-shell">
       <div className="admin-panel-header">
@@ -247,15 +303,41 @@ export default function AdminPanel() {
 
         <div className="admin-section">
           <h3>Fichas de clientes</h3>
+
+          <form onSubmit={createFicha} className="admin-form" style={{ marginBottom: '24px' }}>
+            <input value={newFicha.nombre} onChange={(e) => setNewFicha({ ...newFicha, nombre: e.target.value })} placeholder="Nombre del cliente" />
+            <input value={newFicha.telefono} onChange={(e) => setNewFicha({ ...newFicha, telefono: e.target.value })} placeholder="Teléfono" />
+            <input value={newFicha.servicio} onChange={(e) => setNewFicha({ ...newFicha, servicio: e.target.value })} placeholder="Servicio (ej. Soft gel)" />
+            <button type="submit" className="btn tiny">Crear ficha manualmente</button>
+          </form>
+
           {fichas.length === 0 && <p style={{ opacity: 0.6 }}>Sin fichas.</p>}
           <ul className="admin-list">
             {fichas.map((f) => (
               <li key={f.id} className="pending-item">
-                <strong>{f.nombre || f.username || 'Sin nombre'}</strong>
-                <div className="pending-meta">{f.servicio}</div>
-                <div className="pending-meta">{f.email || f.username}</div>
-                <div className="pending-meta">Tel: {f.telefono || 'N/A'}</div>
-                <div className="pending-meta" style={{ marginTop: '8px' }}>{new Date(f.created_at).toLocaleString()}</div>
+                {editingFicha && editingFicha.id === f.id ? (
+                  <form onSubmit={saveFichaEdit} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <input value={editingFicha.nombre || ''} onChange={(e) => setEditingFicha({ ...editingFicha, nombre: e.target.value })} placeholder="Nombre" />
+                    <input value={editingFicha.telefono || ''} onChange={(e) => setEditingFicha({ ...editingFicha, telefono: e.target.value })} placeholder="Teléfono" />
+                    <input value={editingFicha.servicio || ''} onChange={(e) => setEditingFicha({ ...editingFicha, servicio: e.target.value })} placeholder="Servicio" />
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <button type="submit" className="btn tiny">Guardar</button>
+                      <button type="button" className="btn ghost tiny" onClick={() => setEditingFicha(null)}>Cancelar</button>
+                    </div>
+                  </form>
+                ) : (
+                  <>
+                    <strong>{f.nombre || f.username || 'Sin nombre'}</strong>
+                    <div className="pending-meta">{f.servicio}</div>
+                    <div className="pending-meta">{f.email || f.username}</div>
+                    <div className="pending-meta">Tel: {f.telefono || 'N/A'}</div>
+                    <div className="pending-meta" style={{ marginTop: '8px' }}>{new Date(f.created_at).toLocaleString()}</div>
+                    <div style={{ marginTop: '10px', display: 'flex', gap: '8px' }}>
+                      <button className="btn ghost tiny" onClick={() => setEditingFicha(f)}>Editar</button>
+                      <button className="btn ghost tiny" onClick={() => deleteFicha(f.id)} style={{ color: 'var(--accent)', borderColor: 'var(--accent)' }}>Borrar</button>
+                    </div>
+                  </>
+                )}
               </li>
             ))}
           </ul>

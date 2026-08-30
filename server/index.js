@@ -285,6 +285,42 @@ app.post('/api/fichas', async (req, res) => {
   }
 })
 
+app.put('/api/fichas/:id', async (req, res) => {
+  const id = Number(req.params.id)
+  const { nombre, telefono, servicio, estado_actual, alergias, enfermedades, historial, preferencia, observaciones } = req.body
+
+  if (!id || !nombre || !telefono || !servicio) {
+    return res.status(400).json({ success: false, error: 'Faltan campos obligatorios' })
+  }
+
+  try {
+    await pool.query(
+      `UPDATE fichas SET 
+        nombre = ?, telefono = ?, servicio = ?, estado_actual = ?, 
+        alergias = ?, enfermedades = ?, historial = ?, preferencia = ?, observaciones = ? 
+       WHERE id = ?`,
+      [nombre, telefono, servicio, estado_actual || 'Normal', alergias || '', enfermedades || '', historial || '', preferencia || '', observaciones || '', id]
+    )
+    res.json({ success: true, message: 'Ficha actualizada' })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ success: false, error: 'Error interno' })
+  }
+})
+
+app.delete('/api/fichas/:id', async (req, res) => {
+  const id = Number(req.params.id)
+  if (!id) return res.status(400).json({ success: false, error: 'ID inválido' })
+  
+  try {
+    await pool.query('DELETE FROM fichas WHERE id = ?', [id])
+    res.json({ success: true, message: 'Ficha eliminada' })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ success: false, error: 'Error interno' })
+  }
+})
+
 app.get('/api/users', async (req, res) => {
   try {
     const [rows] = await pool.query(

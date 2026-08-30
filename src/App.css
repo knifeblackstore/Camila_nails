@@ -365,6 +365,11 @@
   transition: all 0.2s ease;
 }
 
+option {
+  background: var(--surface);
+  color: var(--text-h);
+}
+
 .admin-form input:focus,
 .admin-form select:focus,
 .admin-upload-box select:focus,

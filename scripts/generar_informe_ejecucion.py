@@ -68,16 +68,17 @@ pdf.chapter_body('En cumplimiento con el requisito de proporcionar una grabacion
 
 pdf.set_fill_color(245, 247, 248)
 pdf.set_draw_color(57, 169, 0)
-pdf.rect(15, pdf.get_y(), 180, 22, 'DF')
+pdf.rect(15, pdf.get_y(), 180, 24, 'DF')
 pdf.set_xy(18, pdf.get_y() + 3)
 pdf.set_font('Arial', 'B', 10)
 pdf.set_text_color(30, 91, 0)
-pdf.cell(0, 5, 'Enlace del Video de Demostracion (YouTube / Google Drive / Loom):', 0, 1)
-pdf.set_font('Arial', 'U', 9.5)
-pdf.set_text_color(0, 70, 180)
+pdf.cell(0, 5, 'Enlace de la Grabacion Audiovisual en YouTube (Clic para abrir):', 0, 1)
+pdf.set_font('Arial', 'U', 10)
+pdf.set_text_color(0, 70, 200)
 pdf.set_x(18)
-pdf.cell(0, 6, 'https://drive.google.com/file/d/view?usp=sharing (Pega aqui el enlace de tu video grabado)', 0, 1)
-pdf.ln(12)
+video_url = 'https://youtu.be/LNVPlmUUfMA'
+pdf.cell(0, 7, video_url, 0, 1, 'L', link=video_url)
+pdf.ln(13)
 
 pdf.set_font('Arial', '', 9.5)
 pdf.set_text_color(30, 30, 30)

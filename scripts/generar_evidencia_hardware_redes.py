@@ -46,7 +46,7 @@ pdf.set_y(45)
 pdf.set_font('Arial', 'B', 11)
 pdf.set_text_color(80, 80, 80)
 pdf.cell(0, 6, 'SERVICIO NACIONAL DE APRENDIZAJE - SENA', 0, 1, 'C')
-pdf.cell(0, 6, 'CENTRO DE FORMACION TECNOLOGICA | REGIONAL ANTIOQUIA', 0, 1, 'C')
+pdf.cell(0, 6, 'CENTRO DE FORMACION TECNOLOGICA | REGIONAL RISARALDA', 0, 1, 'C')
 pdf.ln(15)
 
 pdf.set_font('Arial', 'B', 16)
@@ -61,7 +61,7 @@ pdf.cell(0, 7, 'Numero de Ficha: 3186645', 0, 1, 'C')
 pdf.cell(0, 7, 'Aprendiz: Andres Mauricio Valencia Arango', 0, 1, 'C')
 pdf.cell(0, 7, 'Instructor: Adornay Sanchez', 0, 1, 'C')
 pdf.ln(15)
-pdf.cell(0, 7, 'Medellin, Colombia - 2026', 0, 1, 'C')
+pdf.cell(0, 7, 'Pereira, Risaralda - 2026', 0, 1, 'C')
 
 # --- INTRODUCCIÓN ---
 pdf.add_page()

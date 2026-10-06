@@ -37,19 +37,14 @@ class PDF(FPDF):
         self.multi_cell(0, 6.5, body)
         self.ln(2)
 
-    def image_placeholder(self, title, description):
+    def image_real(self, img_path, title):
         self.ln(2)
-        self.set_fill_color(240, 240, 240)
-        self.set_draw_color(200, 200, 200)
-        self.rect(self.get_x() + 15, self.get_y(), 160, 40, 'DF')
-        self.set_y(self.get_y() + 15)
-        self.set_font('Arial', 'I', 10)
+        self.image(img_path, x=30, w=150)
+        self.ln(2)
+        self.set_font('Arial', 'I', 9)
         self.set_text_color(100, 100, 100)
-        self.cell(0, 5, '[ ' + title + ' ]', 0, 1, 'C')
-        self.set_font('Arial', '', 9)
-        self.cell(0, 5, description, 0, 1, 'C')
-        self.set_y(self.get_y() + 20)
-        self.ln(2)
+        self.cell(0, 5, 'Figura: ' + title, 0, 1, 'C')
+        self.ln(5)
 
 pdf = PDF()
 pdf.set_auto_page_break(auto=True, margin=15)
@@ -131,23 +126,22 @@ pdf.chapter_body(
     '2. Se hace clic en el boton "XAMPP para Windows" para descargar la ultima version estable.\n'
     '3. Se espera a que finalice la descarga del archivo ejecutable (.exe).'
 )
-pdf.image_placeholder('Captura Descriptiva 1: Descarga de XAMPP', 'Sitio web oficial de Apache Friends mostrando el boton de descarga para Windows.')
+pdf.image_real('scripts/img/img1.jpg', 'Descarga de XAMPP')
 
 pdf.chapter_subtitle('Paso 2: Ejecucion y Seleccion de Componentes')
 pdf.chapter_body(
     '1. Se ejecuta el instalador descargado con permisos de Administrador.\n'
-    '2. En la pantalla de seleccion de componentes, se deja marcado "Apache" (obligatorio para paginas HTML) y "PHP". No es indispensable MySQL para esta prueba estatica, pero se puede dejar por defecto.\n'
+    '2. En la pantalla de seleccion de componentes, se deja marcado "Apache" y "PHP".\n'
     '3. Se selecciona la ruta de instalacion por defecto, que generalmente es "C:\\xampp".'
 )
-pdf.image_placeholder('Captura Descriptiva 2: Asistente de instalacion', 'Ventana del asistente de XAMPP (Setup) donde se seleccionan los componentes a instalar.')
+pdf.image_real('scripts/img/img2.jpg', 'Asistente de instalacion de XAMPP')
 
 pdf.chapter_subtitle('Paso 3: Finalizacion y Panel de Control')
 pdf.chapter_body(
     '1. Una vez terminada la instalacion, se desmarca o marca la opcion de abrir el Panel de Control y se da clic en "Finish".\n'
-    '2. Al abrir el "XAMPP Control Panel", se observan los servicios disponibles (Apache, MySQL, FileZilla, etc.).\n'
-    '3. Se hace clic en el boton "Start" ubicado al lado del modulo "Apache". El fondo del nombre "Apache" se pondra en color verde, indicando que el servidor web local esta funcionando en el puerto 80 (o 8080 si hay conflictos).'
+    '2. Al abrir el "XAMPP Control Panel", se hace clic en el boton "Start" de Apache.'
 )
-pdf.image_placeholder('Captura Descriptiva 3: Panel de Control Apache Activo', 'Panel de XAMPP mostrando el modulo Apache resaltado en color verde y los puertos asignados (80, 443).')
+pdf.image_real('scripts/img/img3.jpg', 'Panel de Control Apache Activo')
 
 # =========================================================================
 # PÁGINA 4: DESPLIEGUE DEL PRODUCTO
@@ -158,26 +152,25 @@ pdf.chapter_title('4. PASO A PASO: MONTAJE Y DESPLIEGUE DE LA PLANTILLA')
 pdf.chapter_subtitle('Paso 1: Preparacion de los archivos HTML')
 pdf.chapter_body(
     '1. Se descarga la plantilla HTML seleccionada en formato ZIP desde el sitio web.\n'
-    '2. Se extrae (descomprime) el archivo ZIP en una carpeta temporal (por ejemplo, en Descargas). La carpeta debe contener el archivo "index.html" y las carpetas "css", "js", e "img".'
+    '2. Se extrae (descomprime) el archivo ZIP en una carpeta temporal.'
 )
-pdf.image_placeholder('Captura Descriptiva 4: Archivos de la Plantilla', 'Explorador de archivos mostrando el index.html y las carpetas de recursos extraidas del ZIP.')
+pdf.image_real('scripts/img/img4.jpg', 'Archivos de la Plantilla Extraidos')
 
 pdf.chapter_subtitle('Paso 2: Montaje en el directorio de servidor (htdocs)')
 pdf.chapter_body(
-    '1. Se abre el Explorador de Archivos de Windows y se navega hasta la ruta de instalacion de XAMPP: "C:\\xampp\\htdocs".\n'
-    '2. El directorio "htdocs" es la raiz publica del servidor Apache. Todo lo que se ponga aqui podra verse en el navegador.\n'
-    '3. Se crea una nueva carpeta dentro de htdocs llamada "mi_proyecto_sena".\n'
-    '4. Se copian todos los archivos de la plantilla extraida (index.html, css, etc.) y se pegan dentro de "C:\\xampp\\htdocs\\mi_proyecto_sena".'
+    '1. Se navega hasta la ruta de instalacion de XAMPP: "C:\\xampp\\htdocs".\n'
+    '2. Se crea una nueva carpeta llamada "mi_proyecto_sena".\n'
+    '3. Se copian todos los archivos de la plantilla y se pegan dentro.'
 )
-pdf.image_placeholder('Captura Descriptiva 5: Ruta htdocs', 'Carpeta htdocs mostrando la subcarpeta "mi_proyecto_sena" con los archivos HTML en su interior.')
+pdf.image_real('scripts/img/img5.jpg', 'Montaje en la carpeta htdocs')
 
 pdf.chapter_subtitle('Paso 3: Pruebas de Despliegue Local')
 pdf.chapter_body(
-    '1. Se abre un navegador web (Google Chrome, Firefox o Edge).\n'
-    '2. En la barra de direcciones se escribe: "http://localhost/mi_proyecto_sena" y se presiona la tecla Enter.\n'
-    '3. El navegador se comunica con el servidor Apache local, el cual lee el archivo index.html de la carpeta especificada y renderiza la plantilla web en la pantalla.'
+    '1. Se abre un navegador web.\n'
+    '2. En la barra de direcciones se escribe: "http://localhost/mi_proyecto_sena".\n'
+    '3. El navegador renderiza la plantilla web desde el servidor Apache local.'
 )
-pdf.image_placeholder('Captura Descriptiva 6: Despliegue Exitoso en el Navegador', 'Navegador Chrome mostrando la plantilla web renderizada perfectamente en la direccion localhost.')
+pdf.image_real('scripts/img/img6.jpg', 'Despliegue Exitoso en el Navegador Localhost')
 
 # =========================================================================
 # PÁGINA 5: CONCLUSIONES Y BIBLIOGRAFÍA

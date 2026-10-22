@@ -20,6 +20,8 @@ const DEFAULT_ADMIN = {
 app.use(cors())
 app.use(express.json())
 
+const isLocal = !process.env.DB_HOST || process.env.DB_HOST === 'localhost' || process.env.DB_HOST === '127.0.0.1'
+
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   port: Number(process.env.DB_PORT) || 3306,
@@ -29,6 +31,7 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
+  ssl: isLocal ? false : { minVersion: 'TLSv1.2', rejectUnauthorized: true }
 })
 
 const uploadsDir = path.join(__dirname, 'uploads')

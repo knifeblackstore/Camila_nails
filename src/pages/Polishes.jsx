@@ -137,9 +137,11 @@ export default function Polishes() {
       </div>
 
       {showAddForm && isAdmin && (
-        <form onSubmit={handleCreatePolish} className="form" style={{ background: 'var(--surface-soft)', padding: '20px', borderRadius: '12px', border: '1px solid var(--border)', marginBottom: '30px', maxWidth: '600px' }}>
-          <h3 style={{ marginTop: 0 }}>Nuevo Esmalte</h3>
-          <div className="field">
+        <form onSubmit={handleCreatePolish} className="custom-form" style={{ background: 'var(--surface-soft)', padding: '24px', borderRadius: '14px', border: '1px solid var(--border)', marginBottom: '30px', maxWidth: '600px', boxShadow: 'var(--shadow)' }}>
+          <h3 style={{ marginTop: 0, marginBottom: '6px' }}>Nuevo Esmalte</h3>
+          <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '16px' }}>Ingresa la información del esmalte junto con su muestra o fotografía:</p>
+
+          <div className="custom-field">
             <label>Nombre o Tono del esmalte:</label>
             <input 
               type="text" 
@@ -149,8 +151,9 @@ export default function Polishes() {
               required 
             />
           </div>
+
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-            <div className="field">
+            <div className="custom-field">
               <label>Marca:</label>
               <input 
                 type="text" 
@@ -159,7 +162,7 @@ export default function Polishes() {
                 onChange={e => setBrand(e.target.value)} 
               />
             </div>
-            <div className="field">
+            <div className="custom-field">
               <label>Tipo de esmalte:</label>
               <select value={category} onChange={e => setCategory(e.target.value)}>
                 <option value="Semipermanente">Semipermanente</option>
@@ -170,7 +173,8 @@ export default function Polishes() {
               </select>
             </div>
           </div>
-          <div className="field">
+
+          <div className="custom-field">
             <label>Descripción o recomendaciones:</label>
             <textarea 
               rows="2" 
@@ -179,7 +183,8 @@ export default function Polishes() {
               onChange={e => setDescription(e.target.value)} 
             />
           </div>
-          <div className="field">
+
+          <div className="custom-field">
             <label>Foto del esmalte o muestra de color:</label>
             <input 
               type="file" 
@@ -187,8 +192,9 @@ export default function Polishes() {
               onChange={e => setFile(e.target.files?.[0] || null)} 
             />
           </div>
-          <button type="submit" className="btn" disabled={saving} style={{ marginTop: '10px' }}>
-            {saving ? 'Guardando...' : 'Guardar esmalte'}
+
+          <button type="submit" className="btn" disabled={saving} style={{ marginTop: '10px', alignSelf: 'flex-start', padding: '10px 24px' }}>
+            {saving ? 'Guardando esmalte...' : 'Guardar esmalte'}
           </button>
         </form>
       )}

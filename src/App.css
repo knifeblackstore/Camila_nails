@@ -572,6 +572,62 @@ option {
 .form { display:flex; flex-direction:column; gap:10px; max-width:480px }
 .form label { display:flex; flex-direction:column; gap:6px }
 .form input, .form textarea { padding:8px; border-radius:8px; border:1px solid var(--border) }
+
+/* Formulario limpio para agregar estilos y esmaltes */
+.custom-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+.custom-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: static;
+  width: 100%;
+}
+.custom-field label {
+  position: static;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-h);
+  pointer-events: auto;
+  transform: none !important;
+  margin-bottom: 2px;
+}
+.custom-field input[type="text"],
+.custom-field textarea,
+.custom-field select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-h);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.custom-field input[type="text"]:focus,
+.custom-field textarea:focus,
+.custom-field select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+.custom-field input[type="file"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px dashed var(--border);
+  background: var(--surface);
+  color: var(--text-h);
+  font-size: 13px;
+  cursor: pointer;
+}
 .profile-page { max-width:640px; margin-inline:auto; }
 .profile-card { padding:28px; background:linear-gradient(145deg,var(--surface),var(--surface-soft)); border:1px solid var(--border); box-shadow:var(--shadow); text-align:left; }
 .profile-card h2 { margin-bottom:8px; font-size:34px; }

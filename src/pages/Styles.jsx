@@ -161,9 +161,11 @@ export default function Styles() {
       </div>
 
       {showAddForm && isAdmin && (
-        <form onSubmit={handleCreateStyle} className="form" style={{ background: 'var(--surface-soft)', padding: '20px', borderRadius: '12px', border: '1px solid var(--border)', marginBottom: '30px', maxWidth: '600px' }}>
-          <h3 style={{ marginTop: 0 }}>Agregar nuevo estilo</h3>
-          <div className="field">
+        <form onSubmit={handleCreateStyle} className="custom-form" style={{ background: 'var(--surface-soft)', padding: '24px', borderRadius: '14px', border: '1px solid var(--border)', marginBottom: '30px', maxWidth: '600px', boxShadow: 'var(--shadow)' }}>
+          <h3 style={{ marginTop: 0, marginBottom: '6px' }}>Agregar nuevo estilo de uñas</h3>
+          <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '16px' }}>Completa los campos a continuación para publicar un nuevo estilo o técnica en el catálogo:</p>
+          
+          <div className="custom-field">
             <label>Nombre del estilo o servicio:</label>
             <input 
               type="text" 
@@ -173,25 +175,28 @@ export default function Styles() {
               required 
             />
           </div>
-          <div className="field">
-            <label>Descripción:</label>
+
+          <div className="custom-field">
+            <label>Descripción del procedimiento:</label>
             <textarea 
               rows="3" 
-              placeholder="Explica en qué consiste el procedimiento y su acabado..." 
+              placeholder="Explica en qué consiste el procedimiento, materiales y su acabado..." 
               value={newStyleDesc} 
               onChange={e => setNewStyleDesc(e.target.value)} 
             />
           </div>
-          <div className="field">
-            <label>Foto del estilo:</label>
+
+          <div className="custom-field">
+            <label>Foto del estilo (opcional):</label>
             <input 
               type="file" 
               accept="image/*" 
               onChange={e => setNewStyleFile(e.target.files?.[0] || null)} 
             />
           </div>
-          <button type="submit" className="btn" disabled={savingStyle} style={{ marginTop: '10px' }}>
-            {savingStyle ? 'Guardando...' : 'Guardar estilo'}
+
+          <button type="submit" className="btn" disabled={savingStyle} style={{ marginTop: '10px', alignSelf: 'flex-start', padding: '10px 24px' }}>
+            {savingStyle ? 'Guardando estilo...' : 'Guardar estilo'}
           </button>
         </form>
       )}

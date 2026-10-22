@@ -20,6 +20,14 @@ const DEFAULT_ADMIN = {
 app.use(cors())
 app.use(express.json())
 
+app.get('/', (req, res) => {
+  res.json({ status: 'online', service: 'Camila Nails API' })
+})
+
+app.get('/api', (req, res) => {
+  res.json({ status: 'online', service: 'Camila Nails API' })
+})
+
 const isLocal = !process.env.DB_HOST || process.env.DB_HOST === 'localhost' || process.env.DB_HOST === '127.0.0.1'
 
 const pool = mysql.createPool({

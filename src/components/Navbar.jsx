@@ -7,6 +7,22 @@ import logo from '../assets/logo-camila-nails.png.jpeg'
 export default function Navbar() {
   const { user, logout } = useContext(AuthContext)
   const nav = useNavigate()
+  const [theme, setTheme] = React.useState(() => localStorage.getItem('camila_theme') || 'auto')
+
+  React.useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark')
+    } else if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light')
+    } else {
+      document.documentElement.removeAttribute('data-theme')
+    }
+    localStorage.setItem('camila_theme', theme)
+  }, [theme])
+
+  function toggleTheme() {
+    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'))
+  }
 
   // Cierra la sesión y devuelve al usuario a la página principal.
   function handleLogout() {
@@ -30,6 +46,26 @@ export default function Navbar() {
           {canSeeFicha && <Link to="/ficha-tecnica">Ficha técnica</Link>}
         </nav>
         <div className="actions">
+          <button 
+            type="button" 
+            onClick={toggleTheme} 
+            className="btn-theme-toggle" 
+            title="Cambiar a modo Blanco o Negro"
+            style={{
+              background: 'transparent',
+              border: '1px solid var(--border)',
+              borderRadius: '20px',
+              padding: '6px 12px',
+              cursor: 'pointer',
+              color: 'var(--text-h)',
+              fontSize: '13px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            {theme === 'dark' ? '🌙 Modo Oscuro' : '☀️ Modo Claro'}
+          </button>
           {user ? (
             <>
               <span className="user">{user.username || user.email}</span>

@@ -112,6 +112,28 @@ async function initDB() {
       )
     `)
 
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS custom_styles (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        description TEXT,
+        image_url TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `)
+
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS polishes (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        brand VARCHAR(255) DEFAULT '',
+        category VARCHAR(255) DEFAULT 'general',
+        description TEXT,
+        image_url TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `)
+
     const [existingAdmin] = await connection.query(
       'SELECT id FROM users WHERE username = ? OR email = ?',
       [DEFAULT_ADMIN.username, DEFAULT_ADMIN.email]
@@ -261,6 +283,84 @@ app.get('/api/uploads', async (req, res) => {
   } catch (err) {
     console.error(err)
     res.status(500).json({ success: false, error: 'Error interno' })
+  }
+})
+
+// === ESTILOS PERSONALIZADOS ===
+app.get('/api/custom-styles', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM custom_styles ORDER BY id DESC')
+    res.json(rows)
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ success: false, error: 'Error al obtener estilos' })
+  }
+})
+
+app.post('/api/custom-styles', upload.single('image'), async (req, res) => {
+  const { name, description } = req.body
+  if (!name) return res.status(400).json({ success: false, error: 'El nombre del estilo es obligatorio' })
+
+  const imageUrl = req.file ? `/uploads/${req.file.filename}` : (req.body.image_url || '')
+  try {
+    const [result] = await pool.query(
+      'INSERT INTO custom_styles (name, description, image_url) VALUES (?, ?, ?)',
+      [name, description || '', imageUrl]
+    )
+    res.json({ success: true, id: result.insertId, name, description, image_url: imageUrl })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ success: false, error: 'Error al guardar el estilo' })
+  }
+})
+
+app.delete('/api/custom-styles/:id', async (req, res) => {
+  const id = Number(req.params.id)
+  try {
+    await pool.query('DELETE FROM custom_styles WHERE id = ?', [id])
+    res.json({ success: true, message: 'Estilo eliminado' })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ success: false, error: 'Error al eliminar el estilo' })
+  }
+})
+
+// === ESMALTES ===
+app.get('/api/polishes', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM polishes ORDER BY id DESC')
+    res.json(rows)
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ success: false, error: 'Error al obtener esmaltes' })
+  }
+})
+
+app.post('/api/polishes', upload.single('image'), async (req, res) => {
+  const { name, brand, category, description } = req.body
+  if (!name) return res.status(400).json({ success: false, error: 'El nombre del esmalte es obligatorio' })
+
+  const imageUrl = req.file ? `/uploads/${req.file.filename}` : (req.body.image_url || '')
+  try {
+    const [result] = await pool.query(
+      'INSERT INTO polishes (name, brand, category, description, image_url) VALUES (?, ?, ?, ?, ?)',
+      [name, brand || '', category || 'Tradicional', description || '', imageUrl]
+    )
+    res.json({ success: true, id: result.insertId, name, brand, category, description, image_url: imageUrl })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ success: false, error: 'Error al guardar el esmalte' })
+  }
+})
+
+app.delete('/api/polishes/:id', async (req, res) => {
+  const id = Number(req.params.id)
+  try {
+    await pool.query('DELETE FROM polishes WHERE id = ?', [id])
+    res.json({ success: true, message: 'Esmalte eliminado' })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ success: false, error: 'Error al eliminar el esmalte' })
   }
 })
 

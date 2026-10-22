@@ -22,7 +22,23 @@ export default function Styles() {
   const { user } = useContext(AuthContext)
   const [uploadedImages, setUploadedImages] = useState({})
   const [uploadingStyle, setUploadingStyle] = useState('')
+  const [customStyles, setCustomStyles] = useState([])
+  const [showAddForm, setShowAddForm] = useState(false)
+  const [newStyleName, setNewStyleName] = useState('')
+  const [newStyleDesc, setNewStyleDesc] = useState('')
+  const [newStyleFile, setNewStyleFile] = useState(null)
+  const [savingStyle, setSavingStyle] = useState(false)
+
   const isAdmin = user?.role === 'admin' || user?.email === 'admin@admin.com'
+
+  function loadCustomStyles() {
+    fetch('/api/custom-styles')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) setCustomStyles(data)
+      })
+      .catch(() => {})
+  }
 
   useEffect(() => {
     fetch('/api/uploads')
@@ -35,6 +51,8 @@ export default function Styles() {
         setUploadedImages(images)
       })
       .catch(() => setUploadedImages({}))
+
+    loadCustomStyles()
   }, [])
 
   async function uploadImage(styleName, event) {
@@ -56,6 +74,47 @@ export default function Styles() {
       alert(error.message)
     } finally {
       setUploadingStyle('')
+    }
+  }
+
+  async function handleCreateStyle(e) {
+    e.preventDefault()
+    if (!newStyleName.trim()) return alert('El nombre del estilo es obligatorio')
+
+    setSavingStyle(true)
+    const form = new FormData()
+    form.append('name', newStyleName)
+    form.append('description', newStyleDesc)
+    if (newStyleFile) form.append('image', newStyleFile)
+
+    try {
+      const res = await fetch('/api/custom-styles', {
+        method: 'POST',
+        body: form
+      })
+      const data = await res.json()
+      if (!res.ok || !data.success) throw new Error(data.error || 'Error al guardar')
+      
+      setNewStyleName('')
+      setNewStyleDesc('')
+      setNewStyleFile(null)
+      setShowAddForm(false)
+      loadCustomStyles()
+      alert('¡Estilo agregado con éxito!')
+    } catch (err) {
+      alert(err.message)
+    } finally {
+      setSavingStyle(false)
+    }
+  }
+
+  async function handleDeleteCustomStyle(id) {
+    if (!window.confirm('¿Seguro que deseas eliminar este estilo?')) return
+    try {
+      const res = await fetch(`/api/custom-styles/${id}`, { method: 'DELETE' })
+      if (res.ok) loadCustomStyles()
+    } catch (err) {
+      alert('Error al eliminar')
     }
   }
 
@@ -84,8 +143,61 @@ export default function Styles() {
 
   return (
     <section className="page styles">
-      <h2>Estilos de uñas</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '15px', marginBottom: '20px' }}>
+        <div>
+          <h2>Estilos de uñas</h2>
+          <p style={{ color: 'var(--text-muted)' }}>Descubre nuestra variedad de técnicas y estilos para el cuidado y embellecimiento de tus manos y pies.</p>
+        </div>
+        {isAdmin && (
+          <button 
+            type="button" 
+            className="btn" 
+            onClick={() => setShowAddForm(prev => !prev)}
+            style={{ padding: '8px 18px', borderRadius: '20px' }}
+          >
+            {showAddForm ? '✕ Cerrar formulario' : '➕ Agregar nuevo estilo'}
+          </button>
+        )}
+      </div>
+
+      {showAddForm && isAdmin && (
+        <form onSubmit={handleCreateStyle} className="form" style={{ background: 'var(--surface-soft)', padding: '20px', borderRadius: '12px', border: '1px solid var(--border)', marginBottom: '30px', maxWidth: '600px' }}>
+          <h3 style={{ marginTop: 0 }}>Agregar nuevo estilo</h3>
+          <div className="field">
+            <label>Nombre del estilo o servicio:</label>
+            <input 
+              type="text" 
+              placeholder="Ej: Uñas Acrílicas Esculpidas" 
+              value={newStyleName} 
+              onChange={e => setNewStyleName(e.target.value)} 
+              required 
+            />
+          </div>
+          <div className="field">
+            <label>Descripción:</label>
+            <textarea 
+              rows="3" 
+              placeholder="Explica en qué consiste el procedimiento y su acabado..." 
+              value={newStyleDesc} 
+              onChange={e => setNewStyleDesc(e.target.value)} 
+            />
+          </div>
+          <div className="field">
+            <label>Foto del estilo:</label>
+            <input 
+              type="file" 
+              accept="image/*" 
+              onChange={e => setNewStyleFile(e.target.files?.[0] || null)} 
+            />
+          </div>
+          <button type="submit" className="btn" disabled={savingStyle} style={{ marginTop: '10px' }}>
+            {savingStyle ? 'Guardando...' : 'Guardar estilo'}
+          </button>
+        </form>
+      )}
+
       <div className="grid">
+        {/* Estilos predeterminados */}
         {stylesList.map((style) => (
           <article key={style.name} className="card">
             <div className="thumb">{(uploadedImages[style.name] || style.image) && <img src={uploadedImages[style.name] || style.image} alt={style.name} />}</div>
@@ -96,6 +208,33 @@ export default function Styles() {
               <input type="file" accept="image/*" onChange={(event) => uploadImage(style.name, event)} disabled={uploadingStyle !== ''} />
             </label>}
             {isAdmin && <button className="btn ghost" onClick={() => propose(style.name)}>Editar información</button>}
+          </article>
+        ))}
+
+        {/* Estilos nuevos agregados por el usuario */}
+        {customStyles.map((cs) => (
+          <article key={'custom-' + cs.id} className="card" style={{ border: '1px solid var(--accent-border)' }}>
+            <div className="thumb">
+              {cs.image_url ? (
+                <img src={cs.image_url} alt={cs.name} />
+              ) : (
+                <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--surface-muted)', color: 'var(--text-subtle)' }}>
+                  Sin imagen
+                </div>
+              )}
+            </div>
+            <h3>{cs.name}</h3>
+            <p>{cs.description}</p>
+            {isAdmin && (
+              <button 
+                type="button" 
+                className="btn ghost tiny" 
+                onClick={() => handleDeleteCustomStyle(cs.id)}
+                style={{ color: '#ef4444', borderColor: '#ef4444', marginTop: '10px' }}
+              >
+                🗑️ Eliminar estilo
+              </button>
+            )}
           </article>
         ))}
       </div>

@@ -4,7 +4,8 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "echo 'No build required for server'"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
